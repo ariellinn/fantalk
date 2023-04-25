@@ -27,18 +27,37 @@ sessionController.createSessionCookieAndStartSession = async (req, res, next) =>
 
 }
 
-
 sessionController.isLoggedIn = async (req, res, next) => {
+  if (Object.hasOwn(req.cookies, ssid)) {
+    try {
+      const params = [`${req.cookies.ssid}`];
+      const text = 'SELECT * FROM eventuser WHERE _id = $1'
+      const data = await db.query(text, params);
+      if (data.rows.length === 0) {
+        return res.status(200).json(false);
+      }
+      return next();
+    } catch (err) {
+      const errObj = {
+        log: 'cookieController.createSessionCookie could not read DB' + err,
+        status: 500,
+        message: { err: `An error occurred` }
+      };
+      return next(errObj);
+    }
+  }
+  return res.status(200).json(false);
+}
+
+
+sessionController.isAllowed = async (req, res, next) => {
   // write code here
   const params = [`${req.cookies.ssid}`];
   try {
-    const text = 'SELECT '
+    const text = 'SELECT * FROM eventuser WHERE _id = $1'
     const data = await db.query(text, params);
     if (data.rows.length === 0) {
-      //no ssid session was found. Delete that ssid cookie
-
-    } else {
-      //
+      return res.redirect(307, '/signup').send('Invalid Credentials');
     }
     return next();
   } catch (err) {

@@ -4,9 +4,9 @@ const cookieParser = require('cookie-parser');
 const PORT = 3000;
 
 const app = express();
-//routers
+
 //const Router = require('./routes/..);
-const userRouter = require('./routes/userRouter');
+const signupRouter = require('./routes/signupRouter');
 
 const userController = require('./controllers/userController');
 const sessionController = require('./controllers/sessionController');
@@ -28,10 +28,15 @@ app.get('/', (req, res) => {
   return res.status(200).sendFile(path.resolve(__dirname, '../client/index.html'));
 })
 
-app.use('/signup', userRouter);
-
 //Route handling
+app.use('/signup', signupRouter);
 
+app.post('/login', loginRouter);
+
+//Checks if the user is already logged in
+app.get('/isAuthorized', sessionController.isLoggedIn, (req, res) => {
+  return res.status(200).json(true);
+})
 
 
 /*
