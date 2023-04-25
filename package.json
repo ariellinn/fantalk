@@ -5,9 +5,9 @@
   "main": "client/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server/server.js",
+    "start": "NODE_ENV=production nodemon server/server.js",
     "build": "webpack",
-    "dev": "webpack serve --open"
+    "dev": "NODE_ENV=development webpack serve --open & nodemon server/server.js"
   },
   "repository": {
     "type": "git",

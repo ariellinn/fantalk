@@ -8,6 +8,8 @@ const app = express();
 //const Router = require('./routes/..);
 const userRouter = require('./routes/userRouter');
 
+const userController = require('./controllers/userController');
+const sessionController = require('./controllers/sessionController');
 
 /*
 * Parsing request body
@@ -21,8 +23,9 @@ app.use(express.urlencoded({ extended: true }));
 */
 app.use('/build', express.static(path.join(__dirname, '../build')));
 // app.use(express.static(path.resolve(__dirname, '../client')));
+
 app.get('/', (req, res) => {
-  res.status(200).sendFile(path.resolve(__dirname, '../client/index.html'));
+  return res.status(200).sendFile(path.resolve(__dirname, '../client/index.html'));
 })
 
 app.use('/signup', userRouter);

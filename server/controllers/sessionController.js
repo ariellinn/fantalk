@@ -9,11 +9,13 @@ sessionController.createSessionCookieAndStartSession = async (req, res, next) =>
   try {
     if (res.locals.user) {
       const ssid = res.locals.user._id;
-      let text = 'INSERT INTO eventsession (cookie) VALUES ' + ssid;
-      await db.query(text);
+      let params = [`${ssid}`]
+      let text = 'INSERT INTO eventsession (cookie) VALUES ($1)';
+      await db.query(text, params);
       res.cookie('ssid', ssid, { httpOnly: true });
       return next();
     }
+    return next();
   } catch (err) {
     const errObj = {
       log: 'cookieController.createSessionCookieAndStartSession could not read DB' + err,
@@ -49,4 +51,4 @@ sessionController.isLoggedIn = async (req, res, next) => {
   }
 };
 
-exports.module = sessionController;
+module.exports = sessionController;
