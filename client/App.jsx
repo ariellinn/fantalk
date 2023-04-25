@@ -5,7 +5,7 @@ import React, { component } from 'react';
 const App = props => {
   return (
     <div>
-
+      <h1>My App is rendering</h1>
     </div>
   );
 };

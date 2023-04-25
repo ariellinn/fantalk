@@ -1,24 +1,34 @@
 const express = require('express');
 const path = require('path');
+const cookieParser = require('cookie-parser');
 const PORT = 3000;
 
 const app = express();
 //routers
 //const Router = require('./routes/..);
+const userRouter = require('./routes/userRouter');
 
 
 /*
 * Parsing request body
 */
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 /*
 * Requests for static files
 */
-app.use(express.static(path.resolve(__dirname, '../client')));
+app.use('/build', express.static(path.join(__dirname, '../build')));
+// app.use(express.static(path.resolve(__dirname, '../client')));
+app.get('/', (req, res) => {
+  res.status(200).sendFile(path.resolve(__dirname, '../client/index.html'));
+})
+
+app.use('/signup', userRouter);
 
 //Route handling
+
 
 
 /*
