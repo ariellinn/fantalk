@@ -8,9 +8,10 @@ const sessionController = {};
 sessionController.createSessionCookieAndStartSession = async (req, res, next) => {
   try {
     if (res.locals.user) {
-      let text = 'INSERT INTO session (cookie) VALUES ' + res.locals.user._id;
+      const ssid = res.locals.user._id;
+      let text = 'INSERT INTO eventsession (cookie) VALUES ' + ssid;
       await db.query(text);
-      res.cookie('ssid', res.locals.user._id, { httpOnly: true });
+      res.cookie('ssid', ssid, { httpOnly: true });
       return next();
     }
   } catch (err) {

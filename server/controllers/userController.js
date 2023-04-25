@@ -10,14 +10,14 @@ userController.createUser = async (req, res, next) => {
   try {
     //get event_id from event_code
     let params = [`${event_code}`];
-    let text = 'SELECT event_id FROM eventcode WHERE code = $1'
+    let text = 'SELECT _id FROM eventtalk WHERE code = $1'
     const event_id = await db.query(text, params);
     if (event_id.rows.length === 0) {
       return res.status(400).json('Invalid event code. Unable to create account');
     } else {
       const hash = bcrypt(password, 10);
-      params = [`${name}`, `${hash}`, `${event_id.rows[0].event_id}`];
-      text = 'INSERT INTO user (name, password, event_id) VALUES ($1, $2, $3) RETURNING *';
+      params = [`${name}`, `${hash}`, `${event_id.rows[0]._id}`];
+      text = 'INSERT INTO eventuser (name, password, event_id, ishost) VALUES ($1, $2, $3, false) RETURNING *';
       const data = await db.query(text, params);
       res.locals.user = data.rows[0];
       return next();

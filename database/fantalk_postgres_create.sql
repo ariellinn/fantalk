@@ -12,40 +12,39 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --Creating tables--
-CREATE TABLE public.user (
+CREATE TABLE public.eventuser (
   "_id" SERIAL NOT NULL,
-	"firstName" varchar NOT NULL,
+	"name" varchar NOT NULL,
   "password" varchar NOT NULL,
-  "event_id" integer, NOT NULL
+  "event_id" integer NOT NULL,
+  "ishost" boolean NOT NULL,
 	CONSTRAINT "user_pk" PRIMARY KEY ("_id")
 ) WITH (
   OIDS=FALSE
 );
 
-CREATE TABLE public.event (
+CREATE TABLE public.eventtalk (
   "_id" SERIAL NOT NULL,
 	"name" varchar NOT NULL,
-	"host_id" varchar NOT NULL,
+  "code" integer NOT NULL,
 	CONSTRAINT "event_pk" PRIMARY KEY ("_id")
 ) WITH (
   OIDS=FALSE
 );
 
-CREATE TABLE public.session (
-  "cookie" varchar NOT NULL, UNIQUE
-)
+CREATE TABLE public.eventsession (
+  "cookie" integer NOT NULL UNIQUE
+  ) WITH (
+  OIDS=FALSE
+);
 
 
 --Adding Contraints to Foreign Keys--
-ALTER TABLE public.user ADD CONSTRAINT "user_fk1" FOREIGN KEY ("event_id") REFERENCES  public.event("_id");
-
-ALTER TABLE public.event ADD CONSTRAINT "event_fk1" FOREIGN KEY ("host_id") REFERENCES  public.user("_id");
-
-ALTER TABLE public.session ADD CONSTRAINT "session_fk1" FOREIGN KEY ("cookie") REFERENCES  public.user("_id");
+ALTER TABLE public.eventuser ADD CONSTRAINT "user_fk1" FOREIGN KEY ("event_id") REFERENCES  public.eventtalk("_id");
+ALTER TABLE public.eventsession ADD CONSTRAINT "session_fk1" FOREIGN KEY ("cookie") REFERENCES  public.eventuser("_id");
 
 
 
 --Inserting data into Database--
- INSERT INTO public.people VALUES (1, 'Luke Skywalker', '77', 'blond', 'fair', 'blue', '19BBY', 'male', 1, 1, 172);
- INSERT INTO public.people VALUES (2, 'C-3PO', '75', 'n/a', 'gold', 'yellow', '112BBY', 'n/a', 2, 1, 167);
- INSERT INTO public.people VALUES (3, 'R2-D2', '32', 'n/a', 'white, blue', 'red', '33BBY', 'n/a', 2, 8, 96);
+INSERT INTO public.eventtalk (name, code) VALUES ('concert', 123);
+INSERT INTO public.eventuser (name, password, event_id, ishost) VALUES ('Rihanna', 'hello', 1, true);
