@@ -34,7 +34,15 @@ CREATE TABLE public.eventtalk (
 
 CREATE TABLE public.eventsession (
   "cookie" integer NOT NULL UNIQUE
-  ) WITH (
+) WITH (
+  OIDS=FALSE
+);
+
+CREATE TABLE public.eventblog (
+  "message" varchar NOT NULL,
+  "datetime" timestamp NOT NULL,
+  "event_id" integer NOT NULL
+) WITH (
   OIDS=FALSE
 );
 
@@ -42,6 +50,7 @@ CREATE TABLE public.eventsession (
 --Adding Contraints to Foreign Keys--
 ALTER TABLE public.eventuser ADD CONSTRAINT "user_fk1" FOREIGN KEY ("event_id") REFERENCES  public.eventtalk("_id");
 ALTER TABLE public.eventsession ADD CONSTRAINT "session_fk1" FOREIGN KEY ("cookie") REFERENCES  public.eventuser("_id");
+ALTER TABLE public.eventblog ADD CONSTRAINT "blog_fk1" FOREIGN KEY ("event_id") REFERENCES public.eventtalk("_id");
 
 
 

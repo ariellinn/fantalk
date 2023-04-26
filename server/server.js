@@ -7,6 +7,8 @@ const app = express();
 
 //const Router = require('./routes/..);
 const signupRouter = require('./routes/signupRouter');
+const loginRouter = require('./routes/loginRouter');
+const blogRouter = require('./routes/blogRouter');
 
 const userController = require('./controllers/userController');
 const sessionController = require('./controllers/sessionController');
@@ -24,18 +26,23 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/build', express.static(path.join(__dirname, '../build')));
 // app.use(express.static(path.resolve(__dirname, '../client')));
 
+/*
+* Serve main page
+*/
 app.get('/', (req, res) => {
   return res.status(200).sendFile(path.resolve(__dirname, '../client/index.html'));
 })
 
 //Route handling
-app.use('/signup', signupRouter);
+app.use('/api/signup', signupRouter);
 
-app.post('/login', loginRouter);
+app.use('/api/login', loginRouter);
 
-//Checks if the user is already logged in
-app.get('/isAuthorized', sessionController.isLoggedIn, (req, res) => {
-  return res.status(200).json(true);
+app.use('/api/', blogRouter);
+
+//Checks if the user is already logged in. Returns boolean true if yes, false otherwise
+app.get('/api/isLoggedIn', sessionController.isLoggedIn, (req, res) => {
+  return res.status(200).json(res.locals.user);
 })
 
 

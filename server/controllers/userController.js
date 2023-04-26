@@ -17,14 +17,14 @@ userController.createUser = async (req, res, next) => {
     } else {
       const hash = await bcrypt.hash(password, 10);
       params = [`${name}`, `${hash}`, `${event_id.rows[0]._id}`];
-      text = 'INSERT INTO eventuser (name, password, event_id, ishost) VALUES ($1, $2, $3, false) RETURNING *';
+      text = 'INSERT INTO eventuser (name, password, event_id, ishost) VALUES ($1, $2, $3, false) RETURNING _id, name, event_id, ishost';
       const data = await db.query(text, params);
       res.locals.user = data.rows[0];
       return next();
     }
   } catch (err) {
     const errObj = {
-      log: 'cookieController.createUser could not read DB' + err,
+      log: 'userController.createUser could not read DB' + err,
       status: 500,
       message: { err: `An error occurred when creating user` }
     };
@@ -34,21 +34,31 @@ userController.createUser = async (req, res, next) => {
 
 
 userController.verifyUser = async (req, res, next) => {
-  const { name, password } = req.body;
-  if (name === undefined || password === undefined) {
+  const { fname, fpassword } = req.body;
+  if (fname === undefined || fpassword === undefined) {
     return res.status(400).send('Error. Name or password was not provided');
   } else {
     //how to compare password and hash 
-    let params = [`${name}`];
-    let text = 'SELECT * FROM eventuser WHERE name = $1'
-    const result = await db.query(text, params);
-    for (let i = 0; i < result.rows; i++) {
-      const { _id, dbname, dbpassword, event_id, ishost } = result[i];
-      if (bcrypt.compare(password, dbpassword)) {
-        res.locals.user = [_id, dbname, event_id, ishost];
+    try {
+      let params = [`${fname}`];
+      let text = 'SELECT * FROM eventuser WHERE name = $1'
+      const result = await db.query(text, params);
+      for (let i = 0; i < result.rows; i++) {
+        const { _id, name, password, event_id, ishost } = result.rows[i];
+        if (bcrypt.compare(fpassword, password)) {
+          res.locals.user = { _id, name, event_id, ishost };
+          return next();
+        }
       }
+      return res.status(400).json('Incorrect Username or Password');
+    } catch (err) {
+      const errObj = {
+        log: 'userController.verifyUser could not read DB' + err,
+        status: 500,
+        message: { err: `An error occurred when logging user` }
+      };
+      return next(errObj);
     }
-    return res.status(400).json('Incorrect Username or Password');
   }
 }
 
