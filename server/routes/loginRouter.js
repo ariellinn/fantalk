@@ -6,10 +6,6 @@ const sessionController = require('../controllers/sessionController');
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  return res.status(200).sendFile(path.resolve(__dirname, '../../client/index.html'));
-});
-
 router.post('/', userController.verifyUser, sessionController.createSessionCookieAndStartSession, (req, res) => {
   return res.status(200).json(`Successfully logged in ${res.locals.user.name}`);
 })

@@ -32,6 +32,7 @@ module.exports = {
     host: 'localhost',
     port: 8080,
     hot: true,
+    historyApiFallback: true,
     // static: {
     //   directory: path.join(__dirname, 'build'),
     //   publicPath: '/build/bundle.js',
@@ -39,7 +40,7 @@ module.exports = {
     proxy: {
       '/api': {
         target: 'http://localhost:3000/',
-      }
+      },
     }
   },
   plugins: [

@@ -29,16 +29,39 @@ app.use('/build', express.static(path.join(__dirname, '../build')));
 /*
 * Serve main page
 */
+
+//search up how react-router-dom can do client side rendering of get requests to these pages
+//webpack historyApiFallback: true only send pages to index.html if there's any 404 errors
+app.get('/signup', (req, res) => {
+  return res.status(200).sendFile(path.resolve(__dirname, '../client/index.html'));
+});
+
+app.get('/login', (req, res) => {
+  return res.status(200).sendFile(path.resolve(__dirname, '../client/index.html'));
+});
+
+app.get('/blog', (req, res) => {
+  return res.status(200).sendFile(path.resolve(__dirname, '../client/index.html'));
+});
+
+app.get('/event', (req, res) => {
+  return res.status(200).sendFile(path.resolve(__dirname, '../client/index.html'));
+});
+
+app.get('/chat', (req, res) => {
+  return res.status(200).sendFile(path.resolve(__dirname, '../client/index.html'));
+});
+
 app.get('/', (req, res) => {
   return res.status(200).sendFile(path.resolve(__dirname, '../client/index.html'));
-})
+});
 
 //Route handling
 app.use('/api/signup', signupRouter);
 
 app.use('/api/login', loginRouter);
 
-app.use('/api/', blogRouter);
+app.use('/api/blog', blogRouter);
 
 //Checks if the user is already logged in. Returns boolean true if yes, false otherwise
 app.get('/api/isLoggedIn', sessionController.isLoggedIn, (req, res) => {
