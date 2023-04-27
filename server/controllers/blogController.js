@@ -7,11 +7,11 @@ const blogController = {};
 
 blogController.getMessages = async (req, res, next) => {
   try {
-    const { event_id } = req.body;
+    const { event_id } = res.locals.user;
     let params = [`${event_id}`]
-    let text = 'SELECT message, datetime FROM eventblog WHERE event_id = $1 ORDER BY datetime ASC';
+    let text = 'SELECT _id, message, datetime FROM eventblog WHERE event_id = $1 ORDER BY datetime ASC';
     const data = await db.query(text, params);
-    res.locals.messages = data.rows;
+    res.locals.user.messages = data.rows;
     return next();
   } catch (err) {
     const errObj = {
@@ -38,7 +38,23 @@ blogController.addMessage = async (req, res, next) => {
     };
     return next(errObj);
   }
+}
 
+blogController.editMessage = async (req, res, next) => {
+  try {
+    const { message_id, fmessage } = req.body;
+    let params = [`${fmessage}`, `${message_id}`]
+    let text = 'UPDATE eventblog SET message = $1 WHERE _id = $2';
+    await db.query(text, params);
+    return next();
+  } catch (err) {
+    const errObj = {
+      log: 'blogController.addMessage could not read DB' + err,
+      status: 500,
+      message: { err: `An error occurred when adding message to blog` }
+    };
+    return next(errObj);
+  }
 }
 
 

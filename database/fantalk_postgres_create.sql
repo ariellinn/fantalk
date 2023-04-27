@@ -39,6 +39,7 @@ CREATE TABLE public.eventsession (
 );
 
 CREATE TABLE public.eventblog (
+  "_id" SERIAL NOT NULL,
   "message" varchar NOT NULL,
   "datetime" timestamp NOT NULL,
   "event_id" integer NOT NULL

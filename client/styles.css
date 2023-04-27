@@ -151,3 +151,10 @@ nav ul li {
   padding: 0px 40px;
   text-align: center;
 }
+
+.blogContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.blogBox {}

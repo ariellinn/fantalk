@@ -7,15 +7,15 @@ const Signup = props => {
       <form className="formSubmit" >
         <label>
           Name:
-          <input type="text" name='fname' value={props.fname} onChange={(e) => props.handleInputChange(e)} />
+          <input type="text" name='fname' value={props.user.fname} onChange={(e) => props.handleInputChange(e)} />
         </label>
         <label>
           Password:
-          <input type="text" name='fpassword' value={props.fpassword} onChange={(e) => props.handleInputChange(e)} />
+          <input type="text" name='fpassword' value={props.user.fpassword} onChange={(e) => props.handleInputChange(e)} />
         </label>
         <label>
           Event Code:
-          <input type="text" name='code' value={props.code} onChange={(e) => props.handleInputChange(e)} />
+          <input type="text" name='code' value={props.user.code} onChange={(e) => props.handleInputChange(e)} />
         </label>
         <button className="submit" name='signup' type="button" onClick={(e) => props.handleSubmit(e)}>Submit</button>
       </form>

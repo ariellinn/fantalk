@@ -6,9 +6,13 @@ const blogController = require('../controllers/blogController');
 
 const router = express.Router();
 
-router.post('/', blogController.addMessage, (req, res) => {
+router.post('/add', blogController.addMessage, (req, res) => {
   return res.status(200);
 });
+
+router.post('edit', blogController.editMessage, (req, res) => {
+  return res.status(200);
+})
 
 
 

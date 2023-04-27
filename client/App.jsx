@@ -21,15 +21,62 @@ class App extends Component {
       fname: '',
       fpassword: '',
       code: '',
-      blogMessages: []
+      blogMessages: [],
+      editBlogMessage: ''
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.editBlog = this.editBlog.bind(this);
+    this.handleBlogChange = this.handleBlogChange.bind(this);
+    this.deleteBlog = this.deleteBlog.bind(this);
   }
 
-  navigation = function (path) {
-    return useNavigate(path);
+  //updating editBlogMessage
+  handleBlogChange = function (event) {
+    event.preventDefault();
+    const newState = {
+      ...this.state,
+      editBlogMessage: event.target.value
+    };
+    return this.setState(newState);
+  }
+
+  //onsubmitofEditblog
+  editBlog = async function (event) {
+    event.preventDefault();
+    try {
+      const label = event.target.name;
+      newblogMessages = this.blogMessages.slice();
+      for (let i = 0; i < newblogMessages.length; i++) {
+        if (newblogMessages[i]._id === label) {
+          newblogMessages[i].message = event.target.value;
+          break;
+        }
+      }
+      await fetch(`/api/blog/edit`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message_id: event.target.name,
+          fmessage: event.target.value
+        }),
+      });
+      const newState = { ...this.state, blogMessages: newblogMessages };
+      return this.setState(newState);
+    } catch (err) {
+      console.log(err);
+    }
+
+  }
+
+
+
+  deleteBlog = async function (event) {
+    event.preventDefault();
+    //deleteBlog
   }
 
   handleInputChange = function (event) {
@@ -62,6 +109,7 @@ class App extends Component {
       user = await result.json();
       if (user.name) {
         const newState = {
+          ...this.state,
           _id: user._id,
           name: user.name,
           event_id: user.event_id,
@@ -69,7 +117,8 @@ class App extends Component {
           ishost: user.ishost,
           fname: '',
           fpassword: '',
-          code: ''
+          code: '',
+          blogMessages: user.messages
         }
         // this.navigation('/event');
         return this.setState(newState);
@@ -85,20 +134,21 @@ class App extends Component {
       const isData = await fetch('/api/isLoggedIn');
       const isUser = await isData.json();
       if (isUser.isLoggedIn) {
-        const { _id, name, event_id, ishost, isLoggedIn } = isUser;
+        const { _id, name, event_id, ishost, isLoggedIn, messages } = isUser;
         return this.setState({
           ...this.state,
           _id,
           name,
           event_id,
           isLoggedIn,
-          ishost
+          ishost,
+          blogMessages: messages
         })
       } else {
         return this.setState({ ...this.state })
       }
     } catch (err) {
-      return err;
+      console.log(err);
     }
   }
 
@@ -110,7 +160,7 @@ class App extends Component {
           <Route index element={<Main user={this.state} />} />
           <Route path='/signup' element={<Signup user={this.state} handleInputChange={this.handleInputChange} handleSubmit={this.handleSubmit} />} />
           <Route path='/login' element={<Login user={this.state} handleInputChange={this.handleInputChange} handleSubmit={this.handleSubmit} />} />
-          <Route path='/blog' element={<Blog user={this.state} />} />
+          <Route path='/blog' element={<Blog user={this.state} editBlog={this.editBlog} deleteBlog={this.deleteBlog} handleBlogChange={this.handleBlogChange} />} />
           <Route path='/event' element={<Event user={this.state} />} />
           <Route path='/chat' element={<Chat user={this.state} />} />
         </Routes>

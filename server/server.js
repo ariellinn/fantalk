@@ -12,6 +12,7 @@ const blogRouter = require('./routes/blogRouter');
 
 const userController = require('./controllers/userController');
 const sessionController = require('./controllers/sessionController');
+const blogController = require('./controllers/blogController');
 
 /*
 * Parsing request body
@@ -42,7 +43,7 @@ app.use('/api/login', loginRouter);
 app.use('/api/blog', blogRouter);
 
 //Checks if the user is already logged in. Returns boolean true if yes, false otherwise
-app.get('/api/isLoggedIn', sessionController.isLoggedIn, (req, res) => {
+app.get('/api/isLoggedIn', sessionController.isLoggedIn, blogController.getMessages, (req, res) => {
   return res.status(200).json(res.locals.user);
 })
 
