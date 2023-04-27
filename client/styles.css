@@ -97,7 +97,14 @@ nav ul li {
   align-content: center;
   justify-content: center;
   align-items: center;
-  margin-top: 5%;
+  margin-top: 2%;
+  margin: 0 10%;
+}
+
+.mainDiv {
+  line-height: 1.5;
+  font-family: 'Rubik', sans-serif;
+
 }
 
 .formSubmit {

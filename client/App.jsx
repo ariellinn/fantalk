@@ -20,7 +20,8 @@ class App extends Component {
       ishost: false,
       fname: '',
       fpassword: '',
-      code: ''
+      code: '',
+      blogMessages: []
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
