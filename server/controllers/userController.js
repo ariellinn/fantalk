@@ -38,12 +38,11 @@ userController.verifyUser = async (req, res, next) => {
   if (fname === undefined || fpassword === undefined) {
     return res.status(400).send('Error. Name or password was not provided');
   } else {
-    //how to compare password and hash 
     try {
       let params = [`${fname}`];
       let text = 'SELECT * FROM eventuser WHERE name = $1'
       const result = await db.query(text, params);
-      for (let i = 0; i < result.rows; i++) {
+      for (let i = 0; i < result.rows.length; i++) {
         const { _id, name, password, event_id, ishost } = result.rows[i];
         if (bcrypt.compare(fpassword, password)) {
           res.locals.user = { _id, name, event_id, ishost };

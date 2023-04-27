@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import './styles.css';
 import Blog from './components/Blog.jsx';
 import Chat from './components/Chat.jsx';
@@ -27,6 +27,10 @@ class App extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  navigation = function (path) {
+    return useNavigate(path);
+  }
+
   handleInputChange = function (event) {
     event.preventDefault();
     const label = event.target.name;
@@ -37,7 +41,6 @@ class App extends Component {
 
   handleSubmit = async function (event) {
     event.preventDefault();
-    console.log('We are submitting the form', event.target);
     const data = {
       fname: this.state.fname,
       fpassword: this.state.fpassword,
@@ -56,18 +59,21 @@ class App extends Component {
         body: JSON.stringify(data),
       });
       user = await result.json();
-
-      const newState = {
-        _id: user._id,
-        name: user.name,
-        event_id: event_id,
-        isLoggedIn: true,
-        ishost: user.ishost,
-        fname: '',
-        fpassword: '',
-        code: ''
+      if (user.name) {
+        const newState = {
+          _id: user._id,
+          name: user.name,
+          event_id: user.event_id,
+          isLoggedIn: true,
+          ishost: user.ishost,
+          fname: '',
+          fpassword: '',
+          code: ''
+        }
+        // this.navigation('/event');
+        return this.setState(newState);
       }
-      return this.setState(newState);
+
     } catch (err) {
       console.log(err);
     }

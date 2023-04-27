@@ -33,7 +33,7 @@ CREATE TABLE public.eventtalk (
 );
 
 CREATE TABLE public.eventsession (
-  "cookie" integer NOT NULL UNIQUE
+  "cookie" integer NOT NULL
 ) WITH (
   OIDS=FALSE
 );
