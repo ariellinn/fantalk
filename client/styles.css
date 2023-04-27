@@ -176,7 +176,7 @@ nav ul li {
   white-space: nowrap;
 }
 
-.buttonBox button {
+.submitBlog {
   background-color: #FFFFFF;
   border: 1px solid rgb(209, 213, 219);
   border-radius: .5rem;
@@ -196,7 +196,40 @@ nav ul li {
 
 }
 
+button {
+  cursor: pointer
+}
+
 .blogMessages {
   display: flex;
   flex-direction: column;
+}
+
+#flex_submission {
+  display: flex;
+  justify-content: space-between;
+  background: linear-gradient(45deg, rgba(10, 5, 82, 0.8) 0%, rgba(9, 30, 121, 0.7) 52%, rgba(0, 31, 255, 0.8) 100%);
+  border: 1px solid #0077CC;
+  border-radius: 10px;
+  box-sizing: border-box;
+  color: rgb(233 246 210);
+  font-family: 'Rubik', sans-serif;
+  font-weight: 400;
+  letter-spacing: -.022em;
+  min-width: 30px;
+  overflow: visible;
+  padding: 4px 15px;
+  white-space: nowrap;
+  align-items: center;
+  margin-top: 20px;
+}
+
+#flex_submission div {
+  min-width: 60%;
+}
+
+#push_left {
+  margin-left: 20px;
+  min-width: 50%;
+  padding: 5px 10px;
 }

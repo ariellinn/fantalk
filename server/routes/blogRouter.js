@@ -7,11 +7,15 @@ const blogController = require('../controllers/blogController');
 const router = express.Router();
 
 router.post('/add', blogController.addMessage, (req, res) => {
-  return res.status(200);
+  return res.status(200).send();
 });
 
-router.post('edit', blogController.editMessage, (req, res) => {
-  return res.status(200);
+router.post('/edit', blogController.editMessage, (req, res) => {
+  return res.status(200).send();
+})
+
+router.post('/delete', blogController.deleteMessage, (req, res) => {
+  return res.status(200).send();
 })
 
 

@@ -57,5 +57,22 @@ blogController.editMessage = async (req, res, next) => {
   }
 }
 
+blogController.deleteMessage = async (req, res, next) => {
+  try {
+    const { _id } = req.body;
+    let params = [`${_id}`]
+    let text = 'DELETE FROM eventblog WHERE _id = $1';
+    await db.query(text, params);
+    return next();
+  } catch (err) {
+    const errObj = {
+      log: 'blogController.deleteMessage could not read DB' + err,
+      status: 500,
+      message: { err: `An error occurred when deleting message from blog` }
+    };
+    return next(errObj);
+  }
+}
+
 
 module.exports = blogController;

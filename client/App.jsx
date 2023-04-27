@@ -28,12 +28,31 @@ class App extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.editBlog = this.editBlog.bind(this);
-    this.handleBlogChange = this.handleBlogChange.bind(this);
     this.deleteBlog = this.deleteBlog.bind(this);
     this.deleteSession = this.deleteSession.bind(this);
+    this.addBlogMessage = this.addBlogMessage.bind(this);
+  }
+
+  addBlogMessage = async function (event) {
+    event.preventDefault();
+    try {
+      const result = await fetch(`/api/blog/add`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ event_id: this.state.event_id, fmessage: this.state.editBlogMessage }),
+      });
+      await result.json();
+      const newState = { ...this.state, editBlogMessage: '' };
+      return this.setState(newState);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   deleteSession = async function (event) {
+    event.preventDefault();
     try {
       const result = await fetch(`/api/logout`, {
         method: "POST",
@@ -47,16 +66,6 @@ class App extends Component {
       console.log(err);
     }
 
-  }
-
-  //updating editBlogMessage
-  handleBlogChange = function (event) {
-    event.preventDefault();
-    const newState = {
-      ...this.state,
-      editBlogMessage: event.target.value
-    };
-    return this.setState(newState);
   }
 
   //onsubmitofEditblog
@@ -89,11 +98,28 @@ class App extends Component {
 
   }
 
-
-
   deleteBlog = async function (event) {
-    event.preventDefault();
-    //deleteBlog
+    try {
+      console.log(event.target.name);
+      const result = await fetch(`/api/blog/delete`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ _id: Number(event.target.name) }),
+      });
+      const newMessages = [];
+      for (let message of this.state.blogMessages) {
+        if (message._id != Number(event.target.name)) {
+          newMessages.push(message);
+        }
+      }
+
+      const newState = { ...this.state, blogMessages: newMessages };
+      return this.setState(newState);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   handleInputChange = function (event) {
@@ -177,7 +203,7 @@ class App extends Component {
           <Route index element={<Main user={this.state} />} />
           <Route path='/signup' element={<Signup user={this.state} handleInputChange={this.handleInputChange} handleSubmit={this.handleSubmit} />} />
           <Route path='/login' element={<Login user={this.state} handleInputChange={this.handleInputChange} handleSubmit={this.handleSubmit} />} />
-          <Route path='/blog' element={<Blog user={this.state} editBlog={this.editBlog} deleteBlog={this.deleteBlog} handleBlogChange={this.handleBlogChange} />} />
+          <Route path='/blog' element={<Blog user={this.state} editBlog={this.editBlog} deleteBlog={this.deleteBlog} handleInputChange={this.handleInputChange} addBlogMessage={this.addBlogMessage} />} />
           <Route path='/event' element={<Event user={this.state} />} />
           <Route path='/chat' element={<Chat user={this.state} />} />
         </Routes>

@@ -51,8 +51,6 @@ app.get('/api/isLoggedIn', sessionController.isLoggedIn, blogController.getMessa
   return res.status(200).json(res.locals.user);
 })
 
-
-
 /*
 * Catch-all route handler for unknown routes
 */

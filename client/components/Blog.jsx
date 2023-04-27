@@ -13,8 +13,8 @@ const Blog = props => {
               <p>{element.datetime}</p>
             </div>
             <div className='buttonBox'>
-              <button className="submitBlog" name='blogEdit' type="button" onClick={(e) => props.editBlog(e)}>Edit</button>
-              <button className="submitBlog" name='blogDelete' type="button" onClick={(e) => props.deleteBlog(e)}>Delete</button>
+              <button className="submitBlog" name={element._id} type="button" onClick={(e) => props.editBlog(e)}>Edit</button>
+              <button className="submitBlog" name={element._id} type="button" onClick={(e) => props.deleteBlog(e)}>Delete</button>
             </div>
           </div>
         );
@@ -39,6 +39,17 @@ const Blog = props => {
       <h1>BLOG</h1>
       <div className="blogContainer">
         {(props.user.blogMessages.length != 0) ? fillValue(props.user.ishost) : null}
+        {(props.user.ishost) ?
+          <form id="flex_submission">
+            <div>
+              <label>
+                Message to Edit/Add:
+                <input id="push_left" type="text" name='editBlogMessage' value={props.user.editBlogMessage} onChange={(e) => props.handleInputChange(e)} />
+              </label>
+            </div>
+            <button className="submitBlog" type="button" onClick={(e) => props.addBlogMessage(e)}>Submit</button>
+          </form>
+          : null}
       </div>
     </div>
   );
