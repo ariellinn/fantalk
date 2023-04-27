@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import './stylesheets/styles.css';
+import './styles.css';
 import Blog from './components/Blog.jsx';
 import Chat from './components/Chat.jsx';
 import Event from './components/Event.jsx';
@@ -17,18 +17,70 @@ class App extends Component {
       name: undefined,
       event_id: undefined,
       isLoggedIn: false,
-      ishost: false
+      ishost: false,
+      fname: '',
+      fpassword: '',
+      code: ''
     };
+
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleInputChange = function (event) {
+    event.preventDefault();
+    const label = event.target.name;
+    const newState = { ...this.state };
+    newState[label] = event.target.value;
+    return this.setState(newState);
+  }
+
+  handleSubmit = async function (event) {
+    event.preventDefault();
+    console.log('We are submitting the form', event.target);
+    const data = {
+      fname: this.state.fname,
+      fpassword: this.state.fpassword,
+    }
+    let user;
+
+    try {
+      if (event.target.name === 'signup') {
+        data.code = Number(this.state.code);
+      }
+      const result = await fetch(`/api/${event.target.name}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      user = await result.json();
+
+      const newState = {
+        _id: user._id,
+        name: user.name,
+        event_id: event_id,
+        isLoggedIn: true,
+        ishost: user.ishost,
+        fname: '',
+        fpassword: '',
+        code: ''
+      }
+      return this.setState(newState);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   componentDidMount = async () => {
     try {
       const isData = await fetch('/api/isLoggedIn');
       const isUser = await isData.json();
-      console.log("This user is logged in", isUser);
       if (isUser.isLoggedIn) {
         const { _id, name, event_id, ishost, isLoggedIn } = isUser;
         return this.setState({
+          ...this.state,
           _id,
           name,
           event_id,
@@ -36,13 +88,7 @@ class App extends Component {
           ishost
         })
       } else {
-        return this.setState({
-          _id: undefined,
-          name: undefined,
-          event_id: undefined,
-          isLoggedIn: false,
-          ishost: false
-        })
+        return this.setState({ ...this.state })
       }
     } catch (err) {
       return err;
@@ -51,19 +97,17 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <>
         <NavBar user={this.state} />
-        <div className="container">
-          <Routes>
-            <Route index element={<Main user={this.state} />} />
-            <Route path='/signup' element={<Signup user={this.state} />} />
-            <Route path='/login' element={<Login user={this.state} />} />
-            <Route path='/blog' element={<Blog user={this.state} />} />
-            <Route path='/event' element={<Event user={this.state} />} />
-            <Route path='/chat' element={<Chat user={this.state} />} />
-          </Routes>
-        </div>
-      </div>
+        <Routes>
+          <Route index element={<Main user={this.state} />} />
+          <Route path='/signup' element={<Signup user={this.state} handleInputChange={this.handleInputChange} handleSubmit={this.handleSubmit} />} />
+          <Route path='/login' element={<Login user={this.state} handleInputChange={this.handleInputChange} handleSubmit={this.handleSubmit} />} />
+          <Route path='/blog' element={<Blog user={this.state} />} />
+          <Route path='/event' element={<Event user={this.state} />} />
+          <Route path='/chat' element={<Chat user={this.state} />} />
+        </Routes>
+      </>
     )
   }
 }

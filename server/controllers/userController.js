@@ -6,17 +6,17 @@ const bcrypt = require('bcryptjs');
 const userController = {};
 
 userController.createUser = async (req, res, next) => {
-  const { name, password, event_code } = req.body;
+  const { fname, fpassword, code } = req.body;
   try {
     //get event_id from event_code
-    let params = [`${event_code}`];
+    let params = [`${code}`];
     let text = 'SELECT _id FROM eventtalk WHERE code = $1'
     const event_id = await db.query(text, params);
     if (event_id.rows.length === 0) {
       return res.status(400).json('Invalid event code. Unable to create account');
     } else {
-      const hash = await bcrypt.hash(password, 10);
-      params = [`${name}`, `${hash}`, `${event_id.rows[0]._id}`];
+      const hash = await bcrypt.hash(fpassword, 10);
+      params = [`${fname}`, `${hash}`, `${event_id.rows[0]._id}`];
       text = 'INSERT INTO eventuser (name, password, event_id, ishost) VALUES ($1, $2, $3, false) RETURNING _id, name, event_id, ishost';
       const data = await db.query(text, params);
       res.locals.user = data.rows[0];

@@ -4,23 +4,23 @@ import { Link } from 'react-router-dom';
 
 const NavBar = ({ user }) => {
   return (
-    <nav className="">
-      <Link to='/' className="">FanTalk</Link>
+    <nav className="navContainer">
+      <Link to='/' className="logo">FanTalk</Link>
 
       {user.isLoggedIn ?
-        [<ul>
-          <Link to='/event'>Event</Link>,
-          <Link to='/blog'>Blog</Link>,
-          <Link to='/chat'>Chat</Link>
+        [<ul className="routeLinks">
+          <li><Link to='/event'>Event</Link></li>
+          <li><Link to='/blog'>Blog</Link></li>
+          <li><Link to='/chat'>Chat</Link></li>
         </ul>,
-        <div>{`Hi, ${user.name}!`}</div>
+        <div className="name">{`Hi, ${user.name}!`}</div>
         ]
-        : [<ul>
-          <Link to='/signup'>Signup</Link>,
-          <Link to='/login'>Login</Link>
+        : [<ul className="routeLinks">
+          <li><Link to='/signup'>Signup</Link></li>
+          <li><Link to='/login'>Login</Link></li>
         </ul>,
         ]}
-    </nav>
+    </nav >
   );
 }
 
