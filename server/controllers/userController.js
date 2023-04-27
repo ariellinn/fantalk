@@ -61,4 +61,21 @@ userController.verifyUser = async (req, res, next) => {
   }
 }
 
+userController.logoutUser = async (req, res, next) => {
+  const { _id } = req.body;
+  try {
+    let params = [`${_id}`];
+    let text = 'DELETE FROM eventsession WHERE cookie = $1'
+    const result = await db.query(text, params);
+    return next();
+  } catch (err) {
+    const errObj = {
+      log: 'userController.logoutUser could not read DB' + err,
+      status: 500,
+      message: { err: `An error occurred when deleting session of user` }
+    };
+    return next(errObj);
+  }
+}
+
 module.exports = userController;

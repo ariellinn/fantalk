@@ -42,6 +42,10 @@ app.use('/api/login', loginRouter);
 
 app.use('/api/blog', blogRouter);
 
+app.post('/api/logout', userController.logoutUser, (req, res) => {
+  return res.status(200);
+})
+
 //Checks if the user is already logged in. Returns boolean true if yes, false otherwise
 app.get('/api/isLoggedIn', sessionController.isLoggedIn, blogController.getMessages, (req, res) => {
   return res.status(200).json(res.locals.user);

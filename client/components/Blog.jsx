@@ -12,8 +12,10 @@ const Blog = props => {
               <div>{element.message}</div>
               <p>{element.datetime}</p>
             </div>
-            <button className="submitBlog" name='blogEdit' type="button" onClick={(e) => props.editBlog(e)}>Edit</button>
-            <button className="submitBlog" name='blogDelete' type="button" onClick={(e) => props.deleteBlog(e)}>Delete</button>
+            <div className='buttonBox'>
+              <button className="submitBlog" name='blogEdit' type="button" onClick={(e) => props.editBlog(e)}>Edit</button>
+              <button className="submitBlog" name='blogDelete' type="button" onClick={(e) => props.deleteBlog(e)}>Delete</button>
+            </div>
           </div>
         );
       }

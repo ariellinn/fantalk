@@ -157,4 +157,46 @@ nav ul li {
   flex-direction: column;
 }
 
-.blogBox {}
+.blogBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background: rgb(10, 5, 82);
+  background: linear-gradient(45deg, rgba(10, 5, 82, 0.9290091036414566) 0%, rgba(9, 30, 121, 1) 52%, rgba(0, 31, 255, 1) 100%);
+  border: 1px solid #0077CC;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: rgb(233 246 210);
+  font-family: 'Rubik', sans-serif;
+  font-weight: 400;
+  letter-spacing: -.022em;
+  min-width: 30px;
+  overflow: visible;
+  padding: 4px 15px;
+  white-space: nowrap;
+}
+
+.buttonBox button {
+  background-color: #FFFFFF;
+  border: 1px solid rgb(209, 213, 219);
+  border-radius: .5rem;
+  box-sizing: border-box;
+  color: #111827;
+  font-family: "Inter var", ui-sans-serif, system-ui, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: .875rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  padding: .6rem 1rem;
+  margin-top: .4rem;
+  margin-left: .4rem;
+  text-align: center;
+  text-decoration: none #D1D5DB solid;
+  text-decoration-thickness: auto;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+
+}
+
+.blogMessages {
+  display: flex;
+  flex-direction: column;
+}

@@ -30,6 +30,23 @@ class App extends Component {
     this.editBlog = this.editBlog.bind(this);
     this.handleBlogChange = this.handleBlogChange.bind(this);
     this.deleteBlog = this.deleteBlog.bind(this);
+    this.deleteSession = this.deleteSession.bind(this);
+  }
+
+  deleteSession = async function (event) {
+    try {
+      const result = await fetch(`/api/logout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ _id: this.state._id }),
+      });
+      user = await result.json();
+    } catch (err) {
+      console.log(err);
+    }
+
   }
 
   //updating editBlogMessage
@@ -155,7 +172,7 @@ class App extends Component {
   render() {
     return (
       <>
-        <NavBar user={this.state} />
+        <NavBar user={this.state} deleteSession={this.deleteSession} />
         <Routes>
           <Route index element={<Main user={this.state} />} />
           <Route path='/signup' element={<Signup user={this.state} handleInputChange={this.handleInputChange} handleSubmit={this.handleSubmit} />} />

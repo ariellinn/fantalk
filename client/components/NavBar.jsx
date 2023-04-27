@@ -2,18 +2,18 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 
-const NavBar = ({ user }) => {
+const NavBar = props => {
   return (
     <nav className="navContainer">
       <Link to='/' className="logo">FanTalk</Link>
 
-      {user.isLoggedIn ?
+      {props.user.isLoggedIn ?
         [<ul className="routeLinks">
           <li><Link to='/event'>Event</Link></li>
           <li><Link to='/blog'>Blog</Link></li>
           <li><Link to='/chat'>Chat</Link></li>
         </ul>,
-        <div className="name">{`Hi, ${user.name}!`}</div>
+        <button className="name" type="button" onClick={(e) => props.deleteSession(e)}>{`Hi, ${props.user.name}!`}</button>
         ]
         : [<ul className="routeLinks">
           <li><Link to='/signup'>Signup</Link></li>
