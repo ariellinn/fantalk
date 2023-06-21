@@ -34,7 +34,6 @@ class App extends Component {
   }
 
   addBlogMessage = async function (event) {
-    event.preventDefault();
     try {
       const result = await fetch(`/api/blog/add`, {
         method: "POST",
@@ -44,7 +43,14 @@ class App extends Component {
         body: JSON.stringify({ event_id: this.state.event_id, fmessage: this.state.editBlogMessage }),
       });
       await result.json();
-      const newState = { ...this.state, editBlogMessage: '' };
+      const newMessages = [];
+      for (let message of this.state.blogMessages) {
+        if (message._id === Number(event.target.name)) {
+          message.message = this.state.editBlogMessage;
+        }
+        newMessages.push(message);
+      }
+      const newState = { ...this.state, editBlogMessage: '', blogMessages: newMessages };
       return this.setState(newState);
     } catch (err) {
       console.log(err);
@@ -52,10 +58,9 @@ class App extends Component {
   }
 
   deleteSession = async function (event) {
-    event.preventDefault();
     try {
       const result = await fetch(`/api/logout`, {
-        method: "POST",
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
@@ -70,32 +75,28 @@ class App extends Component {
 
   //onsubmitofEditblog
   editBlog = async function (event) {
-    event.preventDefault();
     try {
-      const label = event.target.name;
-      newblogMessages = this.blogMessages.slice();
-      for (let i = 0; i < newblogMessages.length; i++) {
-        if (newblogMessages[i]._id === label) {
-          newblogMessages[i].message = event.target.value;
-          break;
-        }
-      }
-      await fetch(`/api/blog/edit`, {
+      console.log(event.target.name);
+      const result = await fetch(`/api/blog/edit`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          message_id: event.target.name,
-          fmessage: event.target.value
-        }),
+        body: JSON.stringify({ _id: Number(event.target.name), fmessage: this.state.editBlogMessage }),
       });
-      const newState = { ...this.state, blogMessages: newblogMessages };
+      const newMessages = [];
+      for (let message of this.state.blogMessages) {
+        if (message._id === Number(event.target.name)) {
+          message.message = this.state.editBlogMessage;
+        }
+        newMessages.push(message);
+      }
+
+      const newState = { ...this.state, editBlogMessage: '', blogMessages: newMessages };
       return this.setState(newState);
     } catch (err) {
       console.log(err);
     }
-
   }
 
   deleteBlog = async function (event) {
@@ -123,7 +124,6 @@ class App extends Component {
   }
 
   handleInputChange = function (event) {
-    event.preventDefault();
     const label = event.target.name;
     const newState = { ...this.state };
     newState[label] = event.target.value;
@@ -131,7 +131,6 @@ class App extends Component {
   }
 
   handleSubmit = async function (event) {
-    event.preventDefault();
     const data = {
       fname: this.state.fname,
       fpassword: this.state.fpassword,
