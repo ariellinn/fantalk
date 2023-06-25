@@ -56,7 +56,7 @@ class App extends Component {
       console.log(err);
     }
   }
-
+  //onClick of deleting session, calls this function
   deleteSession = async function (event) {
     try {
       const result = await fetch(`/api/logout`, {
