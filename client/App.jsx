@@ -123,6 +123,7 @@ class App extends Component {
     }
   }
 
+  //updating input of label
   handleInputChange = function (event) {
     const label = event.target.name;
     const newState = { ...this.state };
@@ -130,6 +131,7 @@ class App extends Component {
     return this.setState(newState);
   }
 
+  //on submit of signing up
   handleSubmit = async function (event) {
     const data = {
       fname: this.state.fname,
