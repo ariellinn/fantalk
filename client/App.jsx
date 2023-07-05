@@ -173,6 +173,7 @@ class App extends Component {
     }
   }
 
+  //component lifecycle check if user is logged in, then rerender accordingly
   componentDidMount = async () => {
     try {
       const isData = await fetch('/api/isLoggedIn');
