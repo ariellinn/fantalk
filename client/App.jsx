@@ -196,7 +196,7 @@ class App extends Component {
       console.log(err);
     }
   }
-
+  //render main route paths
   render() {
     return (
       <>
