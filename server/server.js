@@ -6,10 +6,12 @@ const PORT = 3000;
 const app = express();
 
 //const Router = require('./routes/..);
+//Imported routes
 const signupRouter = require('./routes/signupRouter');
 const loginRouter = require('./routes/loginRouter');
 const blogRouter = require('./routes/blogRouter');
 
+//Import middleware functions from controllers
 const userController = require('./controllers/userController');
 const sessionController = require('./controllers/sessionController');
 const blogController = require('./controllers/blogController');
