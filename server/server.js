@@ -16,9 +16,6 @@ const userController = require('./controllers/userController');
 const sessionController = require('./controllers/sessionController');
 const blogController = require('./controllers/blogController');
 
-/*
-* Parsing request body
-*/
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));

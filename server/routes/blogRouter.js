@@ -5,7 +5,7 @@ const sessionController = require('../controllers/sessionController');
 const blogController = require('../controllers/blogController');
 
 const router = express.Router();
-
+//Router to handle blog post related network requests
 router.post('/add', blogController.addMessage, (req, res) => {
   return res.status(200).send();
 });
