@@ -19,5 +19,4 @@ router.post('/delete', blogController.deleteMessage, (req, res) => {
 })
 
 
-
 module.exports = router;
